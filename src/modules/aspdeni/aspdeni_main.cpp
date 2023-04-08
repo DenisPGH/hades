@@ -1,7 +1,6 @@
 
 
 #include <drivers/drv_hrt.h>
-#include <parameters/param.h>
 #include <perf/perf_counter.h>
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/module.h>
@@ -10,11 +9,14 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
-#include <uORB/topics/airspeed_validated.h>
 
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
-#include <uORB/topics/vehicle_acceleration.h>
+
+
+#include <drivers/differential_pressure/ASP5033Driver/ASP5033Driver.hpp>//mine
+#include <uORB/topics/differential_pressure.h>//mine
+
 
 
 using namespace time_literals;
@@ -23,7 +25,7 @@ static constexpr uint32_t SCHEDULE_INTERVAL{100_ms};	/**< The schedule interval 
 
 
 
-class ASPDeni : public ModuleBase<ASPDeni>, public px4::ScheduledWorkItem
+class ASPDeni : public ModuleBase<ASPDeni>, public px4::ScheduledWorkItem, public ASP5033Driver
 {
 public:
 
@@ -44,17 +46,14 @@ private:
 
 	void Run() override;
 
-
-
-	uORB::Publication<airspeed_validated_s> _airspeed_validated_pub {ORB_ID(airspeed_validated)};			/**< airspeed validated topic*/
-	uORB::Subscription _vehicle_acceleration_sub{ORB_ID(vehicle_acceleration)};
-	vehicle_acceleration_s _accel {};
+	uORB::Publication<differential_pressure_s> _differential_pressure_pub {ORB_ID(differential_pressure)};//mine
+	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure)};//mine
+	differential_pressure_s _pressure; //mine
 
 
 	hrt_abstime _time_last_airspeed_update[0] {};
 	hrt_abstime _time_now_usec{0};
 
-	int _valid_airspeed_index{-2};
 
 	perf_counter_t _perf_elapsed{};
 
@@ -69,7 +68,8 @@ ASPDeni::ASPDeni():
 {
 
 	_perf_elapsed = perf_alloc(PC_ELAPSED, MODULE_NAME": elapsed");
-	_airspeed_validated_pub.advertise();
+
+	_differential_pressure_pub.advertise(); //mine
 
 }
 
@@ -103,7 +103,7 @@ ASPDeni::task_spawn(int argc, char *argv[])
 void
 ASPDeni::Run()
 {
-	PX4_INFO("ASPDENI");
+	//PX4_INFO("ASPDENI");
 	_time_now_usec = hrt_absolute_time(); // hrt time of the current cycle
 	if (_time_now_usec < 2_s) {
 		return;
@@ -125,7 +125,7 @@ ASPDeni::Run()
 void ASPDeni::poll_topics()
 {
 
-	_vehicle_acceleration_sub.update(&_accel);
+	_differential_pressure_sub.update(&_pressure); //mine
 
 
 
@@ -135,20 +135,14 @@ void ASPDeni::poll_topics()
 
 void ASPDeni::select_airspeed_and_publish()
 {
+	differential_pressure_s _diff_pressure; //mine
+	_diff_pressure.timestamp_sample = 0;
+	_diff_pressure.device_id= 200;
+	_diff_pressure.differential_pressure_pa = differential_pressure_d(); //float
+	_diff_pressure.temperature = temperature_d();   //float
+	_diff_pressure.error_count = 0;
 
-
-	airspeed_validated_s airspeed_validated = {};
-	airspeed_validated.timestamp = _time_now_usec;
-	airspeed_validated.true_ground_minus_wind_m_s = NAN;
-	airspeed_validated.calibrated_ground_minus_wind_m_s = NAN;
-	airspeed_validated.indicated_airspeed_m_s = NAN;
-	airspeed_validated.calibrated_airspeed_m_s = NAN;
-	airspeed_validated.true_airspeed_m_s = NAN;
-	airspeed_validated.airspeed_sensor_measurement_valid = false;
-	airspeed_validated.selected_airspeed_index = _valid_airspeed_index;
-
-
-	_airspeed_validated_pub.publish(airspeed_validated);
+	_differential_pressure_pub.publish(_diff_pressure);
 
 
 }
