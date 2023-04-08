@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.dSYM
 *.o
 *.gch
@@ -108,3 +109,37 @@ src/systemcmds/topic_listener/listener_generated.cpp
 
 # colcon
 log/
+=======
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+>>>>>>> 646d11a598663132c8d1d0c883f8fd57be33bc9d
