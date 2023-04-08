@@ -43,7 +43,12 @@
 // /home/nano/Firmware/build/px4_sitl_default/uORB/topics/differential_pressure.h
 // #include <modules/mavlink/streams/SCALED_PRESSURE3.hpp>
 //  /home/nano/Firmware/platforms/common/include/px4_platform_common/module.h
-//
+//  /home/nano/Firmware/ROMFS/px4fmu_common/init.d/rcS
+// /home/nano/Firmware/ROMFS/px4fmu_common/init.d-posix/rcS
+// /home/nano/Firmware/ROMFS/cannode/init.d/rcS
+// /home/nano/Firmware/posix-configs/SITL/init/test/test_cmd_template.in
+// /home/nano/Firmware/posix-configs/SITL/init/test/test_mavlink
+
 
 
 class Air: public ASP5033Driver {

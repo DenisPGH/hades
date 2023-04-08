@@ -224,6 +224,7 @@ else
 	#
 	tone_alarm start
 
+
 	#
 	# Waypoint storage.
 	# REBOOTWORK this needs to start in parallel.
@@ -382,6 +383,7 @@ else
 
 		dshot start
 		pwm_out start
+
 	fi
 
 	#
@@ -527,6 +529,7 @@ else
 			cyphal start
 		fi
 	fi
+	aspdeni start
 
 #
 # End of autostart.

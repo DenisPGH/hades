@@ -178,5 +178,6 @@ int ASPDeni::print_usage(const char *reason)
 
 extern "C" __EXPORT int aspdeni_main(int argc, char *argv[])
 {
+	PX4_INFO("ASP5033 started.");
 	return ASPDeni::main(argc, argv);
 }
