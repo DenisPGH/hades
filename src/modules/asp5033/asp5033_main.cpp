@@ -27,27 +27,27 @@ static constexpr uint32_t SCHEDULE_INTERVAL{100_ms};	/**< The schedule interval 
 
 
 
-class Asp5033 : public ModuleBase<Asp5033>, public ASP5033Driver,
-	 public px4::ScheduledWorkItem
+class Asp5033 : public ModuleBase<Asp5033>, public ASP5033Driver
+	 //public px4::ScheduledWorkItem
 {
 public:
 
 	Asp5033();
 
-	~Asp5033() override;
+	//~Asp5033() override;
 
 
 	/** @see ModuleBase */
 	static int task_spawn(int argc, char *argv[]);
 
-	//static Asp5033 *instantiate(int argc, char *argv[]);
+	static Asp5033 *instantiate(int argc, char *argv[]);
 
 	/** @see ModuleBase */
 	static int custom_command(int argc, char *argv[]);
 
 	/** @see ModuleBase */
 	static int print_usage(const char *reason = nullptr);
-private:
+
 	void run() override; //override
 
 
@@ -61,17 +61,16 @@ private:
 
 
 
-Asp5033::Asp5033():
-	ASP5033Driver(),
- 	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
+Asp5033::Asp5033()
+ 	//ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
 {
 	_differential_pressure_pub.advertise();
 }
 
-Asp5033::~Asp5033()
-{
-	ScheduleClear();
-}
+// Asp5033::~Asp5033()
+// {
+// 	//ScheduleClear();
+// }
 
 
 
@@ -95,7 +94,7 @@ Asp5033::task_spawn(int argc, char *argv[])
 
 	_object.store(dev);
 
-	dev->ScheduleOnInterval(SCHEDULE_INTERVAL, 10000);
+	//dev->ScheduleOnInterval(SCHEDULE_INTERVAL, 10000);
 	_task_id = task_id_is_work_queue;
 	return PX4_OK;
 }
@@ -143,7 +142,7 @@ Asp5033::run()
 	PX4_INFO("Running");
 
 	//_differential_pressure_sub.update(&_diff_pressure);
-	_diff_pressure.timestamp = _time_now_usec_r;
+	//_diff_pressure.timestamp = _time_now_usec_r;
 	_diff_pressure.timestamp_sample = 0;
 	_diff_pressure.device_id= 200;
 	_diff_pressure.differential_pressure_pa = differential_pressure_d(); //float
