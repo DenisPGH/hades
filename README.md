@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+Experiments to add a new sensor driver into PX4 Invironment:
+Source:
 # PX4 Drone Autopilot
 
 [![Releases](https://img.shields.io/github/release/PX4/PX4-Autopilot.svg)](https://github.com/PX4/PX4-Autopilot/releases) [![DOI](https://zenodo.org/badge/22634/PX4/PX4-Autopilot.svg)](https://zenodo.org/badge/latestdoi/22634/PX4/PX4-Autopilot)
@@ -137,7 +138,3 @@ The PX4 Autopilot project including all of its trademarks is hosted under [Drone
 <a href="https://www.dronecode.org/" style="padding:20px" ><img src="https://mavlink.io/assets/site/logo_dronecode.png" alt="Dronecode Logo" width="110px"/></a>
 <a href="https://www.linuxfoundation.org/projects" style="padding:20px;"><img src="https://mavlink.io/assets/site/logo_linux_foundation.png" alt="Linux Foundation Logo" width="80px" /></a>
 <div style="padding:10px">&nbsp;</div>
-=======
-# hades
-Experiments with PX4
->>>>>>> 646d11a598663132c8d1d0c883f8fd57be33bc9d
