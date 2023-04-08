@@ -85,6 +85,7 @@ private:
 
 				msg.press_diff = differential_pressure.differential_pressure_pa * 0.01f; // Pa to hPa
 				msg.temperature_press_diff = roundf(differential_pressure.temperature * 100.f); // cdegC (centidegrees)
+				//msg.temperature_press_diff=12;
 			}
 
 			mavlink_msg_scaled_pressure3_send_struct(_mavlink->get_channel(), &msg);

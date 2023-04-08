@@ -40,6 +40,7 @@
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_thrust_setpoint.h>
 
+
 class MavlinkStreamVFRHUD : public MavlinkStream
 {
 public:
@@ -82,6 +83,7 @@ private:
 
 			airspeed_validated_s airspeed_validated{};
 			_airspeed_validated_sub.copy(&airspeed_validated);
+
 
 			mavlink_vfr_hud_t msg{};
 			msg.airspeed = airspeed_validated.calibrated_airspeed_m_s;

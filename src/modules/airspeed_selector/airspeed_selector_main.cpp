@@ -294,6 +294,7 @@ AirspeedModule::check_for_connected_airspeed_sensors()
 void
 AirspeedModule::Run()
 {
+
 	_time_now_usec = hrt_absolute_time(); // hrt time of the current cycle
 
 	// do not run the airspeed selector until 2s after system boot,

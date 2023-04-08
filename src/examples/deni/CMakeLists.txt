@@ -30,14 +30,15 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ############################################################################
-px4_add_module(
-	MODULE examples__px4_simple_app
-	MAIN px4_simple_app
-	COMPILE_FLAGS
-		${MAX_CUSTOM_OPT_LEVEL}
-	SRCS
-		px4_simple_app.c
-	DEPENDS
-		px4_work_queue
 
-	)
+px4_add_module(
+    MODULE examples__deni
+    MAIN deni
+    COMPILE_FLAGS
+		${MAX_CUSTOM_OPT_LEVEL}
+    SRCS
+        deni.cpp
+        deni.hpp
+    DEPENDS
+        px4_work_queue
+    )

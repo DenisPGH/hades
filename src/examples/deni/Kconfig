@@ -1,0 +1,5 @@
+menuconfig EXAMPLES_DENI
+	bool "deni"
+	default n
+	---help---
+		Enable support for deni

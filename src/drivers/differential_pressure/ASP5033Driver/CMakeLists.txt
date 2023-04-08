@@ -1,0 +1,13 @@
+
+
+px4_add_module(
+	MODULE drivers__differential_pressure__ASP5033driver
+	MAIN asp5033driver
+	COMPILE_FLAGS
+	SRCS
+		asp5033driver_main.cpp
+		ASP5033Driver.cpp
+		ASP5033Driver.hpp
+	DEPENDS
+		px4_work_queue
+	)

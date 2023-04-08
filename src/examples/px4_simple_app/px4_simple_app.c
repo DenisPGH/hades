@@ -52,11 +52,36 @@
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_attitude.h>
 
+//#include <uORB/topics/airspeed.h> //my include
+
+
+
 __EXPORT int px4_simple_app_main(int argc, char *argv[]);
+
+
+
+
+
 
 int px4_simple_app_main(int argc, char *argv[])
 {
-	PX4_INFO("Hello Sky!");
+	//px4_simple_app
+	//FakeAirspeed fi;
+
+	PX4_INFO("Denislav Test"); // export 'MESA_GL_VERSION_OVERRIDE=3.3 '   before the run make command in TER
+
+	// /
+	// orb_publish(ORB_ID(airspeed_validated), as_pub, &airspeed_deni);
+
+	// PX4_INFO("Temp:\t%8.4f",(double)airspeed_deni.air_temperature_celsius);
+	// PX4_INFO("Speed m/s:\t%8.4f",(double)airspeed_deni.true_airspeed_m_s);
+
+	//PX4_INFO("Speed 2:\t%8.4f",(double)fi.get_data());
+
+
+
+
+
 
 	/* subscribe to vehicle_acceleration topic */
 	int sensor_sub_fd = orb_subscribe(ORB_ID(vehicle_acceleration));
@@ -68,17 +93,19 @@ int px4_simple_app_main(int argc, char *argv[])
 	memset(&att, 0, sizeof(att));
 	orb_advert_t att_pub = orb_advertise(ORB_ID(vehicle_attitude), &att);
 
+
+	//PX4_INFO("Vehicle_attitude:\t%8.4f",(orb_advert_t)att_pub);
+
+
 	/* one could wait for multiple topics with this technique, just using one here */
 	px4_pollfd_struct_t fds[] = {
 		{ .fd = sensor_sub_fd,   .events = POLLIN },
-		/* there could be more file descriptors here, in the form like:
-		 * { .fd = other_sub_fd,   .events = POLLIN },
-		 */
+
 	};
 
 	int error_counter = 0;
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 1; i++) {
 		/* wait for sensor update of 1 file descriptor for 1000 ms (1 second) */
 		int poll_ret = px4_poll(fds, 1, 1000);
 
@@ -116,6 +143,7 @@ int px4_simple_app_main(int argc, char *argv[])
 				att.q[2] = accel.xyz[2];
 
 				orb_publish(ORB_ID(vehicle_attitude), att_pub, &att);
+				PX4_INFO("Vehicle_attitude:\t%8.4f",(double)att.q[1]); //px4_simple_app
 			}
 
 			/* there could be more file descriptors here, in the form like:

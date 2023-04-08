@@ -5,6 +5,7 @@ menu "Differential pressure"
         select DRIVERS_DIFFERENTIAL_PRESSURE_MS4525DO
         select DRIVERS_DIFFERENTIAL_PRESSURE_MS5525DSO
         select DRIVERS_DIFFERENTIAL_PRESSURE_SDP3X
+        select DRIVERS_DIFFERENTIAL_PRESSURE_ASP5033Driver
         ---help---
             Enable default set of differential pressure drivers
     rsource "*/Kconfig"
