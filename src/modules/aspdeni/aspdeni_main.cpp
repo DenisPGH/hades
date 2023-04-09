@@ -14,7 +14,7 @@
 #include <uORB/PublicationMulti.hpp>
 
 
-#include <drivers/differential_pressure/ASP5033Driver/ASP5033Driver.hpp>//mine
+#include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>//mine
 #include <uORB/topics/differential_pressure.h>//mine
 
 

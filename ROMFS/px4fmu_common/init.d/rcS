@@ -529,7 +529,7 @@ else
 			cyphal start
 		fi
 	fi
-	aspdeni start
+
 
 #
 # End of autostart.

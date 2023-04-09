@@ -21,7 +21,7 @@
 
 #include "deni.hpp"
 #include <uORB/topics/differential_pressure.h>
-#include <drivers/differential_pressure/ASP5033Driver/ASP5033Driver.hpp>
+#include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>
 
 //make
 // PATHS
@@ -48,6 +48,9 @@
 // /home/nano/Firmware/ROMFS/cannode/init.d/rcS
 // /home/nano/Firmware/posix-configs/SITL/init/test/test_cmd_template.in
 // /home/nano/Firmware/posix-configs/SITL/init/test/test_mavlink
+
+
+// /home/nano/Firmware/ROMFS/px4fmu_common/init.d/rcS == this file run my script in the PC
 
 
 

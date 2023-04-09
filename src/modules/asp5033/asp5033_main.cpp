@@ -19,7 +19,7 @@
 #include <uORB/topics/mavlink_log.h>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
-#include <drivers/differential_pressure/ASP5033Driver/ASP5033Driver.hpp>
+#include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>
 
 using namespace time_literals;
 
