@@ -187,3 +187,8 @@ PARAM_DEFINE_INT32(NAV_FORCE_VT, 1);
  * @group Mission
  */
 PARAM_DEFINE_FLOAT(NAV_MIN_LTR_ALT, -1.f);
+
+
+/* added this becouse of error in build*/
+
+PARAM_DEFINE_FLOAT(LNDMC_ALT_MAX, 10.0f);

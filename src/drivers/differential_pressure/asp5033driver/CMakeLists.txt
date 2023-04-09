@@ -1,7 +1,7 @@
 
 
 px4_add_module(
-	MODULE drivers__differential_pressure__ASP5033driver
+	MODULE drivers__differential_pressure__asp5033driver
 	MAIN asp5033driver
 	COMPILE_FLAGS
 	SRCS

@@ -51,6 +51,7 @@
 
 
 // /home/nano/Firmware/ROMFS/px4fmu_common/init.d/rcS == this file run my script in the PC
+// /home/nano/Firmware/boards/px4/fmu-v6c/default.px4board need this for Pixhawk 6c
 
 
 

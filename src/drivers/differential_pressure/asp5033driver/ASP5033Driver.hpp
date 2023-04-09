@@ -144,6 +144,10 @@
  */
 
 #pragma once
+
+//#include <random>
+//#include <iostream>
+//#include <ctime>
 #include <drivers/device/i2c.h>
 #include <drivers/drv_hrt.h>
 //#include <lib/drivers/device/posix/I2C.hpp>
@@ -153,17 +157,34 @@
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/topics/differential_pressure.h>
 
+//#include <lib/parameters/param.h> //new
+//#include "board_config.h" //new
+//#include <drivers/device/device.h>//new
+//#include <px4_platform_common/module.h> //new
+
+//#include <px4_platform_common/px4_config.h>//new
+//#include <px4_platform_common/getopt.h>//new
+
 static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interface
-static constexpr uint8_t I2C_ADDRESS_DEFAULT = 0x6D; //adress of ASp5033
+//static constexpr uint8_t I2C_ADDRESS_DEFAULT = 0x6D; //adress of ASp5033
 
 /* Register address */
-#define ADDR_READ_MR			0x00	/* write to this address to start conversion */
+#define ADDR_READ_MR			0x30	/* write to this address to start conversion */
+
+
+/* Register address */
+//#define READ_CMD	0x07	/* Read the data */
+
 
 /* Measurement rate is 100Hz */
 #define MEAS_RATE 100
 #define CONVERSION_INTERVAL	(1000000 / MEAS_RATE)	/* microseconds */
 
-class ASP5033Driver : public device::I2C, public I2CSPIDriver<ASP5033Driver>
+
+/* Configuration Constants */
+#define ASP5033_BASEADDR                                0x6D
+
+class ASP5033Driver : public device::I2C , public I2CSPIDriver<ASP5033Driver>
 {
 public:
 	ASP5033Driver(const I2CSPIDriverConfig &config);
@@ -176,19 +197,21 @@ public:
 	int init() override;
 
 	float differential_pressure_d(){
-		std::random_device dev;
-    		std::mt19937 rng(dev());
-    		std::uniform_int_distribution<std::mt19937::result_type> dist6(1000,1020);
+		// std::random_device dev;
+    		// std::mt19937 rng(dev());
+    		// std::uniform_int_distribution<std::mt19937::result_type> dist6(1000,1020);
 
-		return (float)dist6(rng);
+		//return (float)dist6(rng);
+		return 333.00;
 	}
 
 	float temperature_d(){
-		std::random_device dev_2;
-    		std::mt19937 rng(dev_2());
-    		std::uniform_int_distribution<std::mt19937::result_type> dist6(27,32);
+		//std::random_device dev_2;
+    		// std::mt19937 rng(dev_2());
+    		// std::uniform_int_distribution<std::mt19937::result_type> dist6(27,32);
 
-		return (float)dist6(rng);
+		// return (float)dist6(rng);
+		return 333.00;
 	}
 
 

@@ -34,3 +34,5 @@
 /**
  * @file flight_mode_manager_params.c
  */
+//PARAM_DEFINE_FLOAT(LNDMC_ALT_MAX, 1.e-2f);
+//PARAM_DEFINE_FLOAT(LNDMC_ALT_MAX, 1.e-2f);

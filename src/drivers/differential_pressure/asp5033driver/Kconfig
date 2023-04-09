@@ -1,4 +1,4 @@
-menuconfig DRIVERS_DIFFERENTIAL_PRESSURE_ASP5033Driver
+menuconfig DRIVERS_DIFFERENTIAL_PRESSURE_ASP5033DRIVER
 	bool "asp5033driver"
 	default n
 	---help---
