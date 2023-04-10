@@ -56,7 +56,11 @@
  * Register accessors.
  * For now, no reason not to just use ADC1.
  */
-#define REG(_reg)	(*(volatile uint32_t *)(STM32_ADC1_BASE + _reg))
+//#define REG(_reg)	(*(volatile uint32_t *)(STM32_ADC1_BASE + _reg))
+#define REG(_reg)	(*(volatile uint32_t *)(STM32_ADC12_BASE + _reg))
+
+#define STM32_ADC_CR2_OFFSET 2
+#define ADC_CR2_ADON 2
 
 #define rSR		REG(STM32_ADC_SR_OFFSET)
 #define rCR1		REG(STM32_ADC_CR1_OFFSET)

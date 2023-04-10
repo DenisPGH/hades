@@ -51,7 +51,8 @@ if(NOT "${PX4_BOARD_LABEL}" MATCHES  "canbootloader")
 		set(uavcanbl_padding 4)
 	endif()
 
-	math(EXPR HWBOARD_ID "(${HW_MAJOR} << 8) + ${HW_MINOR}")
+	# math(EXPR HWBOARD_ID "(${HW_MAJOR} << 8) + ${HW_MINOR}")
+	# math(EXPR HWBOARD_ID "(${HW_MAJOR} << 8) + ${HW_MINOR}")
 
 	execute_process(
 		COMMAND git rev-list HEAD --max-count=1 --abbrev=8 --abbrev-commit

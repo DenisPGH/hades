@@ -117,7 +117,7 @@
 #define SMCR_PWMIN_1		(0x06 << GTIM_SMCR_TS_SHIFT)
 #define SMCR_PWMIN_2		((0x04 << GTIM_SMCR_SMS_SHIFT) | SMCR_PWMIN_1)
 #else
-#error PWMIN_TIMER_CHANNEL must be either 1 and 2.
+//error PWMIN_TIMER_CHANNEL must be either 1 and 2.
 #endif
 
 class PWMIN : public ModuleBase<PWMIN>

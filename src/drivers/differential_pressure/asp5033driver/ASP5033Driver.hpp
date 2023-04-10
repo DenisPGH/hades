@@ -184,7 +184,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 /* Configuration Constants */
 #define ASP5033_BASEADDR         0x6D
 
-#define REG_CMD_ASP5033 0x30
+static constexpr uint8_t REG_CMD_ASP5033 =0x30;
 #define REG_PRESS_DATA_ASP5033 0X06
 #define REG_TEMP_DATA_ASP5033 0X09
 #define CMD_MEASURE_ASP5033 0X0A
@@ -202,10 +202,10 @@ public:
 
 	int init() override;
 
-	int16_t PRESSURE = NAN;
-	int16_t TEMPERATURE = NAN;
-	int16_t PRESSURE_PREV = NAN;
-	int16_t TEMPERATURE_PREV = NAN;
+	int16_t PRESSURE = 0;
+	int16_t TEMPERATURE = 0;
+	int16_t PRESSURE_PREV = 0;
+	int16_t TEMPERATURE_PREV = 0;
 	//int press_sum=0;
 	//int press_count=0;
 	//const clock_t last_sample_time = clock();
@@ -229,8 +229,8 @@ private:
 	uint32_t _measure_interval{CONVERSION_INTERVAL};
 	uint32_t _conversion_interval{CONVERSION_INTERVAL};
 
-	int16_t _dp_raw_prev{0};
-	int16_t _dT_raw_prev{0};
+	//int16_t _dp_raw_prev{0};
+	//int16_t _dT_raw_prev{0};
 
 	bool _sensor_ok{false};
 	bool _collect_phase{false};

@@ -42,7 +42,7 @@ int ASP5033Driver::init()
 int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
-	uint8_t cmd = 0;
+	//uint8_t cmd = 0;
 	int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
 
 	if (OK != ret) {
@@ -72,9 +72,9 @@ int ASP5033Driver::collect()
 	//uint8_t status =transfer()
 	if((val[0] & 0x08)==0){
 		//empty values ==NAN
-		PRESSURE =NAN;
-		TEMPERATURE =NAN;
-		PX4_INFO('Empty values';)
+		PRESSURE =0;
+		TEMPERATURE =0;
+		PX4_INFO("Empty values");
 		return ret;
 	}
 
@@ -136,7 +136,7 @@ int ASP5033Driver::collect()
 	// }
 
 	// only publish changes
-	if ((PRESSURE !=NAN && TEMPERATURE != NAN) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
+	if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
 
 		//_dp_raw_prev = dp_raw;
 		//_dT_raw_prev = dT_raw;
@@ -225,7 +225,8 @@ void ASP5033Driver::RunImpl()
 	_collect_phase = true;
 
 	// Print result on console
-	PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",(float)PRESSURE,(float)TEMPERATURE);
+	PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
+	(double)PRESSURE,(double)TEMPERATURE);
 
 	// schedule a fresh cycle call when the measurement is done
 	ScheduleDelayed(CONVERSION_INTERVAL);

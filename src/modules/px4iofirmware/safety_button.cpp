@@ -68,6 +68,8 @@ static unsigned blink_counter = 0;
 
 #define SAFETY_SWITCH_THRESHOLD	10
 
+#define GPIO_BTN_SAFETY 10
+
 static void safety_button_check(void *arg);
 static void failsafe_blink(void *arg);
 

@@ -84,3 +84,10 @@ PARAM_DEFINE_FLOAT(CP_GUIDE_ANG, 30.f);
  * @group Multicopter Position Control
  */
 PARAM_DEFINE_INT32(CP_GO_NO_DATA, 0);
+
+/* Added for fixed error -missing parameters*/
+PARAM_DEFINE_FLOAT(MPC_XY_P, 30.f);
+
+PARAM_DEFINE_FLOAT(MPC_JERK_MAX, 30.f);
+
+PARAM_DEFINE_FLOAT(MPC_ACC_HOR, 30.f);
