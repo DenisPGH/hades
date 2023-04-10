@@ -169,7 +169,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 //static constexpr uint8_t I2C_ADDRESS_DEFAULT = 0x6D; //adress of ASp5033
 
 /* Register address */
-#define ADDR_READ_MR			0x30	/* write to this address to start conversion */
+//#define ADDR_READ_MR			0x30	/* write to this address to start conversion */
 
 
 /* Register address */
@@ -177,12 +177,18 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 
 
 /* Measurement rate is 100Hz */
-#define MEAS_RATE 100
+#define MEAS_RATE 1000 //100
 #define CONVERSION_INTERVAL	(1000000 / MEAS_RATE)	/* microseconds */
 
 
 /* Configuration Constants */
-#define ASP5033_BASEADDR                                0x6D
+#define ASP5033_BASEADDR         0x6D
+
+#define REG_CMD_ASP5033 0x30
+#define REG_PRESS_DATA_ASP5033 0X06
+#define REG_TEMP_DATA_ASP5033 0X09
+#define CMD_MEASURE_ASP5033 0X0A
+
 
 class ASP5033Driver : public device::I2C , public I2CSPIDriver<ASP5033Driver>
 {
@@ -196,21 +202,19 @@ public:
 
 	int init() override;
 
-	float differential_pressure_d(){
-		// std::random_device dev;
-    		// std::mt19937 rng(dev());
-    		// std::uniform_int_distribution<std::mt19937::result_type> dist6(1000,1020);
+	int16_t PRESSURE = NAN;
+	int16_t TEMPERATURE = NAN;
+	int16_t PRESSURE_PREV = NAN;
+	int16_t TEMPERATURE_PREV = NAN;
+	//int press_sum=0;
+	//int press_count=0;
+	//const clock_t last_sample_time = clock();
 
-		//return (float)dist6(rng);
+	float differential_pressure_d(){
 		return 333.00;
 	}
 
 	float temperature_d(){
-		//std::random_device dev_2;
-    		// std::mt19937 rng(dev_2());
-    		// std::uniform_int_distribution<std::mt19937::result_type> dist6(27,32);
-
-		// return (float)dist6(rng);
 		return 333.00;
 	}
 
