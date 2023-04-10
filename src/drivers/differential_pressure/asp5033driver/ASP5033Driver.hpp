@@ -182,7 +182,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 
 
 /* Configuration Constants */
-#define ASP5033_BASEADDR         0x6D
+#define ASP5033_BASEADDR         0x6D  // Adresse for communication to Pixhawk 6c
 
 static constexpr uint8_t REG_CMD_ASP5033 =0x30;
 #define REG_PRESS_DATA_ASP5033 0X06
