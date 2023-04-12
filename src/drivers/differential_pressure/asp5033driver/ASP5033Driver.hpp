@@ -187,7 +187,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 static constexpr uint8_t REG_CMD_ASP5033 =0x30;
 #define REG_PRESS_DATA_ASP5033 0X06
 #define REG_TEMP_DATA_ASP5033 0X09
-#define CMD_MEASURE_ASP5033 0X0A
+#define CMD_MEASURE_ASP5033 0X0C  //0x0A
 
 
 class ASP5033Driver : public device::I2C , public I2CSPIDriver<ASP5033Driver>
@@ -218,6 +218,9 @@ public:
 		return 333.00;
 	}
 
+	//DEFINE_PARAMETERS(
+	//	(ParamFloat<px4::params::SENS_EN_ASP5033>) _asp5033
+	//)
 
 
 private:

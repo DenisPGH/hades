@@ -53,6 +53,10 @@
 // /home/nano/Firmware/ROMFS/px4fmu_common/init.d/rcS == this file run my script in the PC
 // /home/nano/Firmware/boards/px4/fmu-v6c/default.px4board need this for Pixhawk 6c
 
+// /home/nano/Firmware/Tools/upload.sh --> start upload
+// asp5033driver #0 on I2C bus 4 address 0x6D
+// /home/nano/Firmware/src/drivers/drv_sensor.h
+
 
 
 class Air: public ASP5033Driver {

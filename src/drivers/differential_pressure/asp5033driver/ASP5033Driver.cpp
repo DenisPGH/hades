@@ -42,8 +42,8 @@ int ASP5033Driver::init()
 int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
-	//uint8_t cmd = 0;
-	int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
+	uint8_t cmd = CMD_MEASURE_ASP5033;
+	int ret = transfer(&cmd, 1, nullptr, 0);
 
 	if (OK != ret) {
 		perf_count(_comms_errors);
@@ -169,8 +169,8 @@ int ASP5033Driver::collect()
 		differential_pressure_s differential_pressure{};
 		differential_pressure.timestamp_sample = timestamp_sample;
 		differential_pressure.device_id = get_device_id();
-		differential_pressure.differential_pressure_pa = diff_press_pa;
-		differential_pressure.temperature = TEMPERATURE; //temperature_c
+		differential_pressure.differential_pressure_pa = diff_press_pa; //diff_press_pa
+		differential_pressure.temperature = TEMPERATURE ; //temperature_c
 		differential_pressure.error_count = perf_event_count(_comms_errors);
 		differential_pressure.timestamp = hrt_absolute_time();
 		_differential_pressure_pub.publish(differential_pressure);
@@ -184,6 +184,9 @@ int ASP5033Driver::collect()
 void ASP5033Driver::RunImpl()
 {
 	int ret = PX4_ERROR;
+	// Print result on console
+	PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
+	(double)PRESSURE,(double)TEMPERATURE);
 
 	// collection phase
 	if (_collect_phase) {
@@ -224,9 +227,7 @@ void ASP5033Driver::RunImpl()
 	// next phase is collection
 	_collect_phase = true;
 
-	// Print result on console
-	PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
-	(double)PRESSURE,(double)TEMPERATURE);
+
 
 	// schedule a fresh cycle call when the measurement is done
 	ScheduleDelayed(CONVERSION_INTERVAL);
