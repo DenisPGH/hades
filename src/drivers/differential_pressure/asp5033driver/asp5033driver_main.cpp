@@ -22,6 +22,7 @@ void ASP5033Driver::print_usage()
 extern "C" int asp5033driver_main(int argc, char *argv[])
 {
 	PX4_INFO("asp5033driver start working");
+
 	using ThisDriver = ASP5033Driver;
 	BusCLIArguments cli{true, false};
 	cli.i2c_address = ASP5033_BASEADDR;
@@ -29,12 +30,16 @@ extern "C" int asp5033driver_main(int argc, char *argv[])
 
 	const char *verb = cli.parseDefaultArguments(argc, argv);
 
+
+
 	if (!verb) {
 		ThisDriver::print_usage();
 		return -1;
 	}
 
 	BusInstanceIterator iterator(MODULE_NAME, cli, DRV_DIFF_PRESS_DEVTYPE_ASP5033);
+
+	//ThisDriver::print_status(cli,iterator); //DEBUG
 
 	if (!strcmp(verb, "start")) {
 		return ThisDriver::module_start(cli, iterator);

@@ -12,13 +12,14 @@ ASP5033Driver::~ASP5033Driver()
 {
 	perf_free(_sample_perf);
 	perf_free(_comms_errors);
+	perf_free(_fault_perf);
 }
 
 int ASP5033Driver::probe()
 {
-	//uint8_t cmd = 0;
-	//int ret = transfer(&cmd, 1, nullptr, 0);
-	int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
+	uint8_t cmd = 0;
+	int ret = transfer(&cmd, 1, nullptr, 0);
+	//int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
 
 	return ret;
 }
@@ -70,13 +71,13 @@ int ASP5033Driver::collect()
 
 	//uint8_t status = (val[0] & 0xC0) >> 6;
 	//uint8_t status =transfer()
-	if((val[0] & 0x08)==0){
-		//empty values ==NAN
-		PRESSURE =0;
-		TEMPERATURE =0;
-		PX4_INFO("Empty values");
-		return ret;
-	}
+	// if((val[0] & 0x08)==0){
+	// 	//empty values ==NAN
+	// 	PRESSURE =0;
+	// 	TEMPERATURE =0;
+	// 	PX4_INFO("Empty values");
+	// 	return ret;
+	// }
 
 	// switch (status) {
 	// case 0:
@@ -102,26 +103,26 @@ int ASP5033Driver::collect()
 	//int16_t dp_raw = (0x3FFF & ((val[0] << 8) + val[1]));
 	//int16_t dT_raw = (0xFFE0 & ((val[2] << 8) + val[3])) >> 5;
 
-	else {
-		//Pressure is a signed 24-bit value
-		int k=7;
-		double pressure_scala = 1.0 / (1<<k);
-		PRESSURE=(((val[0]<< 24) | (val[1]<<16) | (val[2]<<8)) >> 8) *pressure_scala;
+	//Pressure is a signed 24-bit value
+	int k=7;
+	double pressure_scala = 1.0 / (1<<k);
+	PRESSURE=(((val[0]<< 24) | (val[1]<<16) | (val[2]<<8)) >> 8) *pressure_scala;
 
 
-		//Temperature is a signed 16-bit value in units of 1/256 C
-		TEMPERATURE = ((val[3]<<8) | val[4]);
-		double temp_scala= 1.0/ 256;
-		TEMPERATURE= TEMPERATURE * temp_scala;
+	//Temperature is a signed 16-bit value in units of 1/256 C
+	TEMPERATURE = ((val[3]<<8) | val[4]);
+	double temp_scala= 1.0/ 256;
+	TEMPERATURE= TEMPERATURE * temp_scala;
 
-		// press sum
-		//press_sum += (PRESSURE * pressure_scala);
-		//press_count++;
+	// press sum
+	//press_sum += (PRESSURE * pressure_scala);
+	//press_count++;
 
-		//clock_t last_sample_time=clock();
-		//returne PRESSURE, TEMPERATURE
+	//clock_t last_sample_time=clock();
+	//returne PRESSURE, TEMPERATURE
 
-	}
+
+
 
 
 
@@ -179,6 +180,15 @@ int ASP5033Driver::collect()
 	perf_end(_sample_perf);
 
 	return PX4_OK;
+}
+void ASP5033Driver::print_status()
+{
+
+	I2CSPIDriverBase::print_status();
+
+	perf_print_counter(_sample_perf);
+	perf_print_counter(_comms_errors);
+	perf_print_counter(_fault_perf);
 }
 
 void ASP5033Driver::RunImpl()

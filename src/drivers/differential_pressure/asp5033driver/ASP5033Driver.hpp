@@ -187,7 +187,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 static constexpr uint8_t REG_CMD_ASP5033 =0x30;
 #define REG_PRESS_DATA_ASP5033 0X06
 #define REG_TEMP_DATA_ASP5033 0X09
-#define CMD_MEASURE_ASP5033 0X0C  //0x0A
+#define CMD_MEASURE_ASP5033 0X0A  //0x0A
 
 
 class ASP5033Driver : public device::I2C , public I2CSPIDriver<ASP5033Driver>
@@ -197,6 +197,7 @@ public:
 	~ASP5033Driver() override;
 
 	static void print_usage();
+	void print_status() override;
 
 	void RunImpl();
 
@@ -242,5 +243,6 @@ private:
 
 	perf_counter_t _sample_perf{perf_alloc(PC_ELAPSED, MODULE_NAME": read")};
 	perf_counter_t _comms_errors{perf_alloc(PC_COUNT, MODULE_NAME": communication errors")};
+	perf_counter_t _fault_perf{perf_alloc(PC_ELAPSED, MODULE_NAME": fault detected")};
 };
 
