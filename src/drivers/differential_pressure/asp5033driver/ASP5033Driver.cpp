@@ -52,8 +52,8 @@ int ASP5033Driver::init()
 int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
-	uint8_t cmd = CMD_MEASURE_ASP5033;
-	//uint8_t cmd=REG_CMD_ASP5033;
+	//uint8_t cmd = CMD_MEASURE_ASP5033; // error in barmeter
+	uint8_t cmd=REG_CMD_ASP5033; // no error in baro
 	//PX4_INFO("measure func");
 	//mavlink_log_info(&_mavlink_log_pub,"meas func");
 	int ret = transfer(&cmd, 1, nullptr, 0);
