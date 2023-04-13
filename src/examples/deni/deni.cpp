@@ -57,6 +57,10 @@
 // asp5033driver #0 on I2C bus 4 address 0x6D
 // /home/nano/Firmware/src/drivers/drv_sensor.h
 
+/* After adding a new parameter file you should call make clean */
+
+// /home/nano/Firmware/boards/ark/cannode/init/rc.board_sensors
+
 
 
 class Air: public ASP5033Driver {

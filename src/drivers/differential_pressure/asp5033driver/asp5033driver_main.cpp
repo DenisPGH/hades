@@ -11,6 +11,10 @@
 
 void ASP5033Driver::print_usage()
 {
+	PRINT_MODULE_DESCRIPTION(
+		R"DESCR_STR(
+### Description: This ASP5033 driver-differential pressure module is
+ integrated by Denis,Test Version)DESCR_STR");
 	PRINT_MODULE_USAGE_NAME("asp5033driver", "driver");
 	PRINT_MODULE_USAGE_SUBCATEGORY("airspeed_sensor");
 	PRINT_MODULE_USAGE_COMMAND("start");
@@ -21,7 +25,8 @@ void ASP5033Driver::print_usage()
 
 extern "C" int asp5033driver_main(int argc, char *argv[])
 {
-	PX4_INFO("asp5033driver start working");
+	PX4_INFO("DENISLAV-2");
+	//mavlink_log_info(&_mavlink_log_pub,"enter main function");
 
 	using ThisDriver = ASP5033Driver;
 	BusCLIArguments cli{true, false};
@@ -33,6 +38,7 @@ extern "C" int asp5033driver_main(int argc, char *argv[])
 
 
 	if (!verb) {
+		//PX4_INFO("return -1");
 		ThisDriver::print_usage();
 		return -1;
 	}
@@ -42,6 +48,8 @@ extern "C" int asp5033driver_main(int argc, char *argv[])
 	//ThisDriver::print_status(cli,iterator); //DEBUG
 
 	if (!strcmp(verb, "start")) {
+		//PX4_INFO("enter start");
+		//mavlink_log_info(&_mavlink_log_pub,"enter start-mav");
 		return ThisDriver::module_start(cli, iterator);
 
 	} else if (!strcmp(verb, "stop")) {

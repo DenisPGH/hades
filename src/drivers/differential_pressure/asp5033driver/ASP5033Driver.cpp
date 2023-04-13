@@ -4,8 +4,13 @@
 
 ASP5033Driver::ASP5033Driver(const I2CSPIDriverConfig &config) :
 	I2C(config),
-	I2CSPIDriver(config)
+	I2CSPIDriver(config),
+	ModuleParams(nullptr) //param
+
 {
+	_differential_pressure_pub.advertise(); //param
+	// initialise parameters
+	update_params();  //param
 }
 
 ASP5033Driver::~ASP5033Driver()
@@ -17,6 +22,8 @@ ASP5033Driver::~ASP5033Driver()
 
 int ASP5033Driver::probe()
 {
+	//PX4_INFO("probe func");
+	//mavlink_log_info(&_mavlink_log_pub,"probe func");
 	uint8_t cmd = 0;
 	int ret = transfer(&cmd, 1, nullptr, 0);
 	//int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
@@ -27,6 +34,8 @@ int ASP5033Driver::probe()
 int ASP5033Driver::init()
 {
 	int ret = I2C::init();
+	//PX4_INFO("init func");
+	//mavlink_log_info(&_mavlink_log_pub,"init func");
 
 	if (ret != PX4_OK) {
 		DEVICE_DEBUG("I2C::init failed (%i)", ret);
@@ -44,6 +53,9 @@ int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
 	uint8_t cmd = CMD_MEASURE_ASP5033;
+	//uint8_t cmd=REG_CMD_ASP5033;
+	//PX4_INFO("measure func");
+	//mavlink_log_info(&_mavlink_log_pub,"meas func");
 	int ret = transfer(&cmd, 1, nullptr, 0);
 
 	if (OK != ret) {
@@ -55,6 +67,7 @@ int ASP5033Driver::measure()
 
 int ASP5033Driver::collect()
 {
+	//mavlink_log_info(&_mavlink_log_pub,"colect func");
 	/* read from the sensor */
 	perf_begin(_sample_perf);
 
@@ -66,6 +79,7 @@ int ASP5033Driver::collect()
 	if (ret < 0) {
 		perf_count(_comms_errors);
 		perf_end(_sample_perf);
+		PX4_INFO("collect return ret < 0");
 		return ret;
 	}
 
@@ -138,7 +152,7 @@ int ASP5033Driver::collect()
 
 	// only publish changes
 	if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
-
+	//if (1==1){
 		//_dp_raw_prev = dp_raw;
 		//_dT_raw_prev = dT_raw;
 		PRESSURE_PREV =PRESSURE;
@@ -175,6 +189,7 @@ int ASP5033Driver::collect()
 		differential_pressure.error_count = perf_event_count(_comms_errors);
 		differential_pressure.timestamp = hrt_absolute_time();
 		_differential_pressure_pub.publish(differential_pressure);
+		_differential_pressure_sub.update(&_pressure); //param
 	}
 
 	perf_end(_sample_perf);
@@ -194,9 +209,10 @@ void ASP5033Driver::print_status()
 void ASP5033Driver::RunImpl()
 {
 	int ret = PX4_ERROR;
+	//mavlink_log_info(&_mavlink_log_pub,"RunImpl func");
 	// Print result on console
-	PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
-	(double)PRESSURE,(double)TEMPERATURE);
+	//PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
+	//(double)PRESSURE,(double)TEMPERATURE);
 
 	// collection phase
 	if (_collect_phase) {
@@ -228,6 +244,13 @@ void ASP5033Driver::RunImpl()
 	/* measurement phase */
 	ret = measure();
 
+
+	// parameter_update_s update;
+
+	// if (_parameter_update_sub.update(&update)) {
+	// 	update_params();
+	// }
+
 	if (OK != ret) {
 		DEVICE_DEBUG("measure error");
 	}
@@ -241,4 +264,31 @@ void ASP5033Driver::RunImpl()
 
 	// schedule a fresh cycle call when the measurement is done
 	ScheduleDelayed(CONVERSION_INTERVAL);
+}
+
+
+
+
+void ASP5033Driver::parameters_update()
+{
+	mavlink_log_info(&_mavlink_log_pub,"parameters_update func");
+	if (_differential_pressure_sub.updated()) {
+		differential_pressure_s differential_pressure_update;
+		_differential_pressure_sub.copy(&differential_pressure_update);
+
+		// If any parameter updated, call updateParams() to check if
+		// this class attributes need updating (and do so).
+		updateParams();
+	}
+}
+
+
+void ASP5033Driver::update_params()
+{
+	updateParams();
+
+	//_param_airspeed_scale[0] = _param_airspeed_scale_1.get();
+
+
+
 }
