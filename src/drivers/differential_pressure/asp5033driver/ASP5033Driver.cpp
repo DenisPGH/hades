@@ -49,9 +49,9 @@ int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
 
-	//uint8_t cmd=REG_CMD_ASP5033; // no error in baro
-	uint8_t cmd=REG_PRESS_DATA_ASP5033; // one time run and then stop
-	//uint8_t cmd= CMD_MEASURE_ASP5033; //error was in baro
+	//uint8_t cmd=REG_CMD_ASP5033; // no error in baro- not start the AP
+	uint8_t cmd=REG_PRESS_DATA_ASP5033; // one time run and then stop==best variant
+	//uint8_t cmd= CMD_MEASURE_ASP5033; //error was in baro==barometer 0 missing
 	//uint8_t cmd=0; //default
 	int ret = transfer(&cmd, 1, nullptr, 0);
 
@@ -76,16 +76,16 @@ int ASP5033Driver::collect()
 	}
 
 	// Read pressure and temperature as one block
-	//uint8_t read_data=REG_PRESS_DATA_ASP5033;
+	uint8_t read_data=REG_PRESS_DATA_ASP5033;
 	uint8_t val[5] {};
-	int ret = transfer(nullptr, 0, &val[0], sizeof(val));
-	//int ret = transfer(read_data, 0, &val[0], sizeof(val));
-	if (ret < 0) {
-		perf_count(_comms_errors);
-		perf_end(_sample_perf);
-		PX4_INFO("collect return ret < 0");
-		return ret;
-	}
+	//int ret = transfer(nullptr, 0, &val[0], sizeof(val));
+	transfer(&read_data, 0, val, sizeof(val));
+	// if (ret < 0) {
+	// 	perf_count(_comms_errors);
+	// 	perf_end(_sample_perf);
+	// 	PX4_INFO("collect return ret < 0");
+	// 	return ret;
+	// }
 
 	//Pressure is a signed 24-bit value
 	constexpr uint8_t k=7;
