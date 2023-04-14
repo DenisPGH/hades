@@ -14,7 +14,7 @@ void ASP5033Driver::print_usage()
 	PRINT_MODULE_DESCRIPTION(
 		R"DESCR_STR(
 ### Description: This ASP5033 driver-differential pressure module is
- integrated by Denis,Test Version)DESCR_STR");
+ integrated by Denislav Petrov,Test Version)DESCR_STR");
 	PRINT_MODULE_USAGE_NAME("asp5033driver", "driver");
 	PRINT_MODULE_USAGE_SUBCATEGORY("airspeed_sensor");
 	PRINT_MODULE_USAGE_COMMAND("start");
@@ -25,7 +25,7 @@ void ASP5033Driver::print_usage()
 
 extern "C" int asp5033driver_main(int argc, char *argv[])
 {
-	PX4_INFO("DENISLAV-3");
+	PX4_INFO("DENISLAV-4");
 	//mavlink_log_info(&_mavlink_log_pub,"enter main function");
 
 	using ThisDriver = ASP5033Driver;

@@ -38,6 +38,7 @@ int ASP5033Driver::init()
 	}
 
 	if (ret == PX4_OK) {
+		DEVICE_DEBUG("I2C::init successed (%i)", ret);
 		ScheduleNow();
 	}
 
@@ -47,8 +48,11 @@ int ASP5033Driver::init()
 int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
+
 	//uint8_t cmd=REG_CMD_ASP5033; // no error in baro
-	uint8_t cmd=REG_PRESS_DATA_ASP5033;
+	uint8_t cmd=REG_PRESS_DATA_ASP5033; // one time run and then stop
+	//uint8_t cmd= CMD_MEASURE_ASP5033; //error was in baro
+	//uint8_t cmd=0; //default
 	int ret = transfer(&cmd, 1, nullptr, 0);
 
 	if (OK != ret) {
@@ -61,12 +65,21 @@ int ASP5033Driver::measure()
 int ASP5033Driver::collect()
 {
 	perf_begin(_sample_perf);
-
 	const hrt_abstime timestamp_sample = hrt_absolute_time();
-	int len=5; //was 4
-	uint8_t val[len] {};
-	int ret = transfer(nullptr, 0, &val[0], len);
 
+	//Request a new measurment cycle
+	uint8_t cmd_status=REG_CMD_ASP5033;
+	uint8_t status = transfer(&cmd_status, 1, nullptr, 0);
+
+	if((status & 0x08)==0){
+		return -EAGAIN;
+	}
+
+	// Read pressure and temperature as one block
+	//uint8_t read_data=REG_PRESS_DATA_ASP5033;
+	uint8_t val[5] {};
+	int ret = transfer(nullptr, 0, &val[0], sizeof(val));
+	//int ret = transfer(read_data, 0, &val[0], sizeof(val));
 	if (ret < 0) {
 		perf_count(_comms_errors);
 		perf_end(_sample_perf);
@@ -75,15 +88,16 @@ int ASP5033Driver::collect()
 	}
 
 	//Pressure is a signed 24-bit value
-	int k=7;
-	double pressure_scala = 1.0 / (1<<k);
-	PRESSURE=(((val[0]<< 24) | (val[1]<<16) | (val[2]<<8)) >> 8) *pressure_scala;
+	constexpr uint8_t k=7;
+	constexpr float press_scale = 1.0 / (1U<<k);
+	PRESSURE=(((val[0]<< 24) | (val[1]<<16) | (val[2]<<8)) >> 8) *press_scale;
 
 
-	//Temperature is a signed 16-bit value in units of 1/256 C
-	TEMPERATURE = ((val[3]<<8) | val[4]);
-	double temp_scala= 1.0/ 256;
-	TEMPERATURE= TEMPERATURE * temp_scala;
+	/// temperature is 16 bit signed in units of 1/256 C
+    	const int16_t temp = (val[3]<<8) | val[4];
+    	constexpr float temp_scale = 1.0 / 256;
+	TEMPERATURE= temp *temp_scale;
+
 
 	// only publish changes
 	if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
