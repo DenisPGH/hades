@@ -142,15 +142,24 @@
  *
  *    - link to source dokumentation
  */
-
+//#define DEBUG_BUILD
 #pragma once
 
 //#include <random>
 //#include <iostream>
 //#include <ctime>
+//#include <lib/drivers/device/posix/I2C.hpp>
+
+//#include <lib/parameters/param.h> //new
+//#include "board_config.h" //new
+//#include <drivers/device/device.h>//new
+//#include <px4_platform_common/module.h> //new
+
+//#include <px4_platform_common/px4_config.h>//new
+//#include <px4_platform_common/getopt.h>//new
+
 #include <drivers/device/i2c.h>
 #include <drivers/drv_hrt.h>
-//#include <lib/drivers/device/posix/I2C.hpp>
 
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/i2c_spi_buses.h>
@@ -167,13 +176,6 @@
 
 using namespace time_literals; //param
 
-//#include <lib/parameters/param.h> //new
-//#include "board_config.h" //new
-//#include <drivers/device/device.h>//new
-//#include <px4_platform_common/module.h> //new
-
-//#include <px4_platform_common/px4_config.h>//new
-//#include <px4_platform_common/getopt.h>//new
 
 static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interface
 //static constexpr uint8_t I2C_ADDRESS_DEFAULT = 0x6D; //adress of ASp5033

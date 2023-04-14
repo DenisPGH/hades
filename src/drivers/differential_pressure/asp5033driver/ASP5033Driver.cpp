@@ -22,21 +22,16 @@ ASP5033Driver::~ASP5033Driver()
 
 int ASP5033Driver::probe()
 {
-	//PX4_INFO("probe func");
-	//mavlink_log_info(&_mavlink_log_pub,"probe func");
 	uint8_t cmd = 0;
 	int ret = transfer(&cmd, 1, nullptr, 0);
-	//int ret = transfer(&REG_CMD_ASP5033, 1, nullptr, 0);
-
 	return ret;
+	//return PX4_OK;
+
 }
 
 int ASP5033Driver::init()
 {
 	int ret = I2C::init();
-	//PX4_INFO("init func");
-	//mavlink_log_info(&_mavlink_log_pub,"init func");
-
 	if (ret != PX4_OK) {
 		DEVICE_DEBUG("I2C::init failed (%i)", ret);
 		return ret;
@@ -52,10 +47,8 @@ int ASP5033Driver::init()
 int ASP5033Driver::measure()
 {
 	// Send the command to begin a measurement.
-	//uint8_t cmd = CMD_MEASURE_ASP5033; // error in barmeter
-	uint8_t cmd=REG_CMD_ASP5033; // no error in baro
-	//PX4_INFO("measure func");
-	//mavlink_log_info(&_mavlink_log_pub,"meas func");
+	//uint8_t cmd=REG_CMD_ASP5033; // no error in baro
+	uint8_t cmd=REG_PRESS_DATA_ASP5033;
 	int ret = transfer(&cmd, 1, nullptr, 0);
 
 	if (OK != ret) {
@@ -67,8 +60,6 @@ int ASP5033Driver::measure()
 
 int ASP5033Driver::collect()
 {
-	//mavlink_log_info(&_mavlink_log_pub,"colect func");
-	/* read from the sensor */
 	perf_begin(_sample_perf);
 
 	const hrt_abstime timestamp_sample = hrt_absolute_time();
@@ -83,40 +74,6 @@ int ASP5033Driver::collect()
 		return ret;
 	}
 
-	//uint8_t status = (val[0] & 0xC0) >> 6;
-	//uint8_t status =transfer()
-	// if((val[0] & 0x08)==0){
-	// 	//empty values ==NAN
-	// 	PRESSURE =0;
-	// 	TEMPERATURE =0;
-	// 	PX4_INFO("Empty values");
-	// 	return ret;
-	// }
-
-	// switch (status) {
-	// case 0:
-	// 	// Normal Operation. Good Data Packet
-	// 	break;
-
-	// case 1:
-	// 	// Reserved
-	// 	return -EAGAIN;
-
-	// case 2:
-	// 	// Stale Data. Data has been fetched since last measurement cycle.
-	// 	return -EAGAIN;
-
-	// case 3:
-	// 	// Fault Detected
-	// 	perf_count(_comms_errors);
-	// 	perf_end(_sample_perf);
-	// 	return -EAGAIN;
-	// }
-
-	/* mask the used bits */
-	//int16_t dp_raw = (0x3FFF & ((val[0] << 8) + val[1]));
-	//int16_t dT_raw = (0xFFE0 & ((val[2] << 8) + val[3])) >> 5;
-
 	//Pressure is a signed 24-bit value
 	int k=7;
 	double pressure_scala = 1.0 / (1<<k);
@@ -128,59 +85,19 @@ int ASP5033Driver::collect()
 	double temp_scala= 1.0/ 256;
 	TEMPERATURE= TEMPERATURE * temp_scala;
 
-	// press sum
-	//press_sum += (PRESSURE * pressure_scala);
-	//press_count++;
-
-	//clock_t last_sample_time=clock();
-	//returne PRESSURE, TEMPERATURE
-
-
-
-
-
-
-
-
-
-
-	// dT max is almost certainly an invalid reading
-	// if (dT_raw == 2047) {
-	// 	perf_count(_comms_errors);
-	// 	return -EAGAIN;
-	// }
-
 	// only publish changes
 	if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
-	//if (1==1){
-		//_dp_raw_prev = dp_raw;
-		//_dT_raw_prev = dT_raw;
+
 		PRESSURE_PREV =PRESSURE;
 		TEMPERATURE_PREV=TEMPERATURE;
 
-		//float temperature_c = ((200.0f * dT_raw) / 2047) - 50;
-
-		// Calculate differential pressure. As its centered around 8000
-		// and can go positive or negative
 		const float P_min = -1.0f;
 		const float P_max = 1.0f;
 		const float IN_H20_to_Pa = 248.84f;
-		/*
-		  this equation is an inversion of the equation in the
-		  pressure transfer function figure on page 4 of the datasheet
 
-		  We negate the result so that positive differential pressures
-		  are generated when the bottom port is used as the static
-		  port on the pitot and top port is used as the dynamic port
-		 */
 		float diff_press_PSI = -((PRESSURE - 0.1f * 16383) * (P_max - P_min) / (0.8f * 16383) + P_min);
 		float diff_press_pa = diff_press_PSI * IN_H20_to_Pa;
 
-		/*
-		  With the above calculation the ASP5033 sensor will produce a
-		  positive number when the top port is used as a dynamic port
-		  and bottom port is used as the static port
-		 */
 		differential_pressure_s differential_pressure{};
 		differential_pressure.timestamp_sample = timestamp_sample;
 		differential_pressure.device_id = get_device_id();
@@ -209,11 +126,6 @@ void ASP5033Driver::print_status()
 void ASP5033Driver::RunImpl()
 {
 	int ret = PX4_ERROR;
-	//mavlink_log_info(&_mavlink_log_pub,"RunImpl func");
-	// Print result on console
-	//PX4_INFO("Differential Pressure: %8.4f Pa ,Temperature: %8.4f C",
-	//(double)PRESSURE,(double)TEMPERATURE);
-
 	// collection phase
 	if (_collect_phase) {
 		// perform collection
@@ -243,14 +155,6 @@ void ASP5033Driver::RunImpl()
 
 	/* measurement phase */
 	ret = measure();
-
-
-	// parameter_update_s update;
-
-	// if (_parameter_update_sub.update(&update)) {
-	// 	update_params();
-	// }
-
 	if (OK != ret) {
 		DEVICE_DEBUG("measure error");
 	}

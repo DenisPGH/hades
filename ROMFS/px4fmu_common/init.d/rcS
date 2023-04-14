@@ -466,6 +466,12 @@ else
 		px4flow start -X &
 	fi
 
+	# Check for ASP5033 sensor
+	if param compare -s SENS_EN_ASP5033 1
+	then
+		asp5033driver start -X &
+	fi
+
 	# Payload deliverer module if gripper is enabled
 	if param compare -s PD_GRIPPER_EN 1
 	then
