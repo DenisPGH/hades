@@ -68,23 +68,28 @@ int ASP5033Driver::collect()
 	const hrt_abstime timestamp_sample = hrt_absolute_time();
 
 	//Request a new measurment cycle
-	uint8_t cmd_status=REG_CMD_ASP5033;
-	uint8_t status = transfer(&cmd_status, 1, nullptr, 0);
+	//uint8_t cmd_status=REG_CMD_ASP5033;
+	//uint8_t status = transfer(&cmd_status, 1, nullptr, 0);
 
-	if((status & 0x08)==0){
-		return -EAGAIN;
-	}
+	//if((status & 0x08)==0){
+	//	return -EAGAIN;
+	//}
 
 	// Read pressure and temperature as one block
-	uint8_t read_data=REG_PRESS_DATA_ASP5033;
+	//uint8_t read_data=REG_PRESS_DATA_ASP5033;
 	uint8_t val[5] {};
 	//int ret = transfer(nullptr, 0, &val[0], sizeof(val));
-	transfer(&read_data, 0, val, sizeof(val));
+	transfer(nullptr, 0, val, sizeof(val));
 	// if (ret < 0) {
 	// 	perf_count(_comms_errors);
 	// 	perf_end(_sample_perf);
 	// 	PX4_INFO("collect return ret < 0");
 	// 	return ret;
+	// }
+	//PX4_INFO("WORK GOOD, Denis!!");
+
+	// if((val[0] & 0x08)==0){
+	// 	return -EAGAIN;
 	// }
 
 	//Pressure is a signed 24-bit value
@@ -100,8 +105,8 @@ int ASP5033Driver::collect()
 
 
 	// only publish changes
-	if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
-
+	//if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
+	if (1==1){
 		PRESSURE_PREV =PRESSURE;
 		TEMPERATURE_PREV=TEMPERATURE;
 
@@ -115,8 +120,8 @@ int ASP5033Driver::collect()
 		differential_pressure_s differential_pressure{};
 		differential_pressure.timestamp_sample = timestamp_sample;
 		differential_pressure.device_id = get_device_id();
-		differential_pressure.differential_pressure_pa = diff_press_pa; //diff_press_pa
-		differential_pressure.temperature = TEMPERATURE ; //temperature_c
+		differential_pressure.differential_pressure_pa = (1234+diff_press_pa); //diff_press_pa
+		differential_pressure.temperature = (29.6+TEMPERATURE) ; //temperature_c
 		differential_pressure.error_count = perf_event_count(_comms_errors);
 		differential_pressure.timestamp = hrt_absolute_time();
 		_differential_pressure_pub.publish(differential_pressure);

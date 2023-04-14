@@ -61,6 +61,7 @@
 
 // /home/nano/Firmware/boards/ark/cannode/init/rc.board_sensors
 // /home/nano/Firmware/src/modules/commander/airspeed_calibration.cpp
+///home/nano/Firmware/boards/px4/fmu-v6c/init/rc.board_sensors
 
 
 
