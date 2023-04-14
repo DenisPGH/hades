@@ -120,8 +120,8 @@ int ASP5033Driver::collect()
 		differential_pressure_s differential_pressure{};
 		differential_pressure.timestamp_sample = timestamp_sample;
 		differential_pressure.device_id = get_device_id();
-		differential_pressure.differential_pressure_pa = (1234+diff_press_pa); //diff_press_pa
-		differential_pressure.temperature = (29.6+TEMPERATURE) ; //temperature_c
+		differential_pressure.differential_pressure_pa = (diff_press_pa/1000); //diff_press_pa
+		differential_pressure.temperature = TEMPERATURE ; //temperature_c
 		differential_pressure.error_count = perf_event_count(_comms_errors);
 		differential_pressure.timestamp = hrt_absolute_time();
 		_differential_pressure_pub.publish(differential_pressure);

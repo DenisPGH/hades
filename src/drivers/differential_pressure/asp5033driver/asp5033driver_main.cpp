@@ -25,7 +25,7 @@ void ASP5033Driver::print_usage()
 
 extern "C" int asp5033driver_main(int argc, char *argv[])
 {
-	PX4_INFO("DENISLAV-8");
+	PX4_INFO("DENISLAV-10");
 	//mavlink_log_info(&_mavlink_log_pub,"enter main function");
 
 	using ThisDriver = ASP5033Driver;

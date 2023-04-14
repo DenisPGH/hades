@@ -60,8 +60,8 @@ public:
 private:
 	explicit MavlinkStreamScaledPressure3(Mavlink *mavlink) : MavlinkStream(mavlink) {}
 
-	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure), 2};
-	uORB::Subscription _sensor_baro_sub{ORB_ID(sensor_baro), 2};
+	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure), 1}; //
+	uORB::Subscription _sensor_baro_sub{ORB_ID(sensor_baro), 1}; //2
 
 	bool send() override
 	{
@@ -83,9 +83,11 @@ private:
 					msg.time_boot_ms = differential_pressure.timestamp / 1000;
 				}
 
-				msg.press_diff = differential_pressure.differential_pressure_pa * 0.01f; // Pa to hPa
-				msg.temperature_press_diff = roundf(differential_pressure.temperature * 100.f); // cdegC (centidegrees)
+				//msg.press_diff = differential_pressure.differential_pressure_pa * 0.01f; // Pa to hPa
+				//msg.temperature_press_diff = roundf(differential_pressure.temperature * 100.f); // cdegC (centidegrees)
 				//msg.temperature_press_diff=12;
+				msg.press_diff = differential_pressure.differential_pressure_pa ; // Pa to hPa
+				msg.temperature_press_diff = differential_pressure.temperature; // cdegC (centidegrees)
 			}
 
 			mavlink_msg_scaled_pressure3_send_struct(_mavlink->get_channel(), &msg);
