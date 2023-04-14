@@ -103,7 +103,7 @@ int ASP5033Driver::collect()
     	constexpr float temp_scale = 1.0 / 256;
 	TEMPERATURE= temp *temp_scale;
 
-
+	//change with time step
 	// only publish changes
 	//if ((PRESSURE !=0 && TEMPERATURE !=0) && ((PRESSURE != PRESSURE_PREV) || (TEMPERATURE != TEMPERATURE_PREV))) {
 	if (1==1){
