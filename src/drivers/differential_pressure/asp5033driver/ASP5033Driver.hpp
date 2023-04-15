@@ -216,10 +216,10 @@ public:
 
 	int init() override;
 
-	int16_t PRESSURE = 0;
-	int16_t TEMPERATURE = 0;
-	int16_t PRESSURE_PREV = 0;
-	int16_t TEMPERATURE_PREV = 0;
+	float PRESSURE = 0; //int16_t
+	float TEMPERATURE = 0;
+	float PRESSURE_PREV = 0;
+	float TEMPERATURE_PREV = 0;
 	//float temp_sum;
 
 	float press_sum;

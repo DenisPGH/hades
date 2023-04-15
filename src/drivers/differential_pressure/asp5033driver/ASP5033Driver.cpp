@@ -123,7 +123,8 @@ int ASP5033Driver::collect()
 
 	// ========================================
 
-	if(clock()-last_sample_time>100){
+	//if(clock()-last_sample_time>100){
+	if(((double)(clock()-last_sample_time)/CLOCKS_PER_SEC)>0.1){
 		return -EAGAIN;
 	}
 
@@ -257,6 +258,7 @@ void ASP5033Driver::update_params()
 	updateParams();
 
 	//_param_airspeed_scale[0] = _param_airspeed_scale_1.get();
+	//_asp5033_parameter=1;
 
 
 
