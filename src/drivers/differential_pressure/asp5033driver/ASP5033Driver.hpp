@@ -220,9 +220,13 @@ public:
 	int16_t TEMPERATURE = 0;
 	int16_t PRESSURE_PREV = 0;
 	int16_t TEMPERATURE_PREV = 0;
-	//int press_sum=0;
-	//int press_count=0;
+	//float temp_sum;
+
+	float press_sum;
+	uint32_t press_count;
+
 	//const clock_t last_sample_time = clock();
+	//uint32_t last_sample_ms;
 
 	float differential_pressure_d(){
 		return 333.00;
