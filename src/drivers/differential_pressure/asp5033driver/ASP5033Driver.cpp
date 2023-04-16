@@ -241,7 +241,7 @@ void ASP5033Driver::RunImpl()
 
 void ASP5033Driver::parameters_update()
 {
-	mavlink_log_info(&_mavlink_log_pub,"parameters_update func");
+	//mavlink_log_info(&_mavlink_log_pub,"parameters_update func");
 	if (_differential_pressure_sub.updated()) {
 		differential_pressure_s differential_pressure_update;
 		_differential_pressure_sub.copy(&differential_pressure_update);

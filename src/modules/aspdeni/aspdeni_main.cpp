@@ -14,7 +14,7 @@
 #include <uORB/PublicationMulti.hpp>
 
 
-#include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>//mine
+// #include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>//mine
 #include <uORB/topics/differential_pressure.h>//mine
 
 
@@ -25,7 +25,7 @@ static constexpr uint32_t SCHEDULE_INTERVAL{100_ms};	/**< The schedule interval 
 
 
 
-class ASPDeni : public ModuleBase<ASPDeni>, public px4::ScheduledWorkItem, public ASP5033Driver
+class ASPDeni : public ModuleBase<ASPDeni>, public px4::ScheduledWorkItem
 {
 public:
 
@@ -47,7 +47,7 @@ private:
 	void Run() override;
 
 	uORB::Publication<differential_pressure_s> _differential_pressure_pub {ORB_ID(differential_pressure)};//mine
-	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure)};//mine
+	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure),1};//sub
 	differential_pressure_s _pressure; //mine
 
 
@@ -113,6 +113,28 @@ ASPDeni::Run()
 
 	poll_topics();
 	select_airspeed_and_publish();
+	///###### Subscribe and Print ##################################################################
+	//int sensor_sub_fd = orb_subscribe(ORB_ID(vehicle_acceleration));
+
+	if (_differential_pressure_sub.updated()){
+
+		differential_pressure_s differential_pressure;
+
+		// PX4_INFO("Pres: %8.5f Pa ,Temp: %8.5f C",
+		// (double)differential_pressure.differential_pressure_pa,
+		// (double)differential_pressure.temperature);
+
+		if (_differential_pressure_sub.copy(&differential_pressure)) {
+
+			PX4_INFO("Pres: %8.5f Pa ,Temp: %8.5f C",
+			(double)differential_pressure.differential_pressure_pa,
+			(double)differential_pressure.temperature);
+			//PX4_INFO("------------");
+		}
+
+	}
+
+	///###### Subscribe ##########################################################
 
 	perf_end(_perf_elapsed);
 
@@ -135,14 +157,14 @@ void ASPDeni::poll_topics()
 
 void ASPDeni::select_airspeed_and_publish()
 {
-	differential_pressure_s _diff_pressure; //mine
-	_diff_pressure.timestamp_sample = 0;
-	_diff_pressure.device_id= 200;
-	_diff_pressure.differential_pressure_pa = differential_pressure_d(); //float
-	_diff_pressure.temperature = temperature_d();   //float
-	_diff_pressure.error_count = 0;
+	//differential_pressure_s _diff_pressure; //mine
+	// _diff_pressure.timestamp_sample = 0;
+	// _diff_pressure.device_id= 200;
+	// _diff_pressure.differential_pressure_pa = differential_pressure_d(); //float
+	// _diff_pressure.temperature = temperature_d();   //float
+	// _diff_pressure.error_count = 0;
 
-	_differential_pressure_pub.publish(_diff_pressure);
+	//_differential_pressure_pub.publish(_diff_pressure);
 
 
 }
@@ -178,6 +200,6 @@ int ASPDeni::print_usage(const char *reason)
 
 extern "C" __EXPORT int aspdeni_main(int argc, char *argv[])
 {
-	PX4_INFO("ASP5033 started.");
+	PX4_INFO("ASP5033 started-v2.");
 	return ASPDeni::main(argc, argv);
 }
