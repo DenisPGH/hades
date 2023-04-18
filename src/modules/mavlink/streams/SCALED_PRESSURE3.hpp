@@ -86,7 +86,7 @@ private:
 				//msg.press_diff = differential_pressure.differential_pressure_pa * 0.01f; // Pa to hPa
 				//msg.temperature_press_diff = roundf(differential_pressure.temperature * 100.f); // cdegC (centidegrees)
 				//msg.temperature_press_diff=12;
-				msg.press_diff = differential_pressure.differential_pressure_pa*1000.f ; // Pa to hPa
+				msg.press_diff = differential_pressure.differential_pressure_pa*1000000.f ; // Pa to hPa
 				msg.temperature_press_diff = (int)differential_pressure.temperature; // cdegC (centidegrees)
 			}
 

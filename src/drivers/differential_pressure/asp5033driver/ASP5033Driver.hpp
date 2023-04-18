@@ -145,18 +145,7 @@
 //#define DEBUG_BUILD
 #pragma once
 
-//#include <random>
-//#include <iostream>
-//#include <ctime>
-//#include <lib/drivers/device/posix/I2C.hpp>
 
-//#include <lib/parameters/param.h> //new
-//#include "board_config.h" //new
-//#include <drivers/device/device.h>//new
-//#include <px4_platform_common/module.h> //new
-
-//#include <px4_platform_common/px4_config.h>//new
-//#include <px4_platform_common/getopt.h>//new
 
 #include <drivers/device/i2c.h>
 #include <drivers/drv_hrt.h>
@@ -178,14 +167,6 @@ using namespace time_literals; //param
 
 
 static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interface
-//static constexpr uint8_t I2C_ADDRESS_DEFAULT = 0x6D; //adress of ASp5033
-
-/* Register address */
-//#define ADDR_READ_MR			0x30	/* write to this address to start conversion */
-
-
-/* Register address */
-//#define READ_CMD	0x07	/* Read the data */
 
 
 /* Measurement rate is 100Hz */
@@ -196,7 +177,7 @@ static constexpr uint32_t I2C_SPEED = 100 * 1000; // 100 kHz I2C serial interfac
 /* Configuration Constants */
 #define ASP5033_BASEADDR         0x6D  // Adresse for communication to Pixhawk 6c
 
-static constexpr uint8_t REG_CMD_ASP5033 =0x30;
+#define REG_CMD_ASP5033  0x30;
 #define REG_PRESS_DATA_ASP5033 0X06
 #define REG_TEMP_DATA_ASP5033 0X09
 #define CMD_MEASURE_ASP5033 0X0A  //0x0A
@@ -220,13 +201,9 @@ public:
 	float TEMPERATURE = 0;
 	float PRESSURE_PREV = 0;
 	float TEMPERATURE_PREV = 0;
-	//float temp_sum;
 
 	float press_sum;
 	uint32_t press_count;
-
-	//const clock_t last_sample_time = clock();
-	//uint32_t last_sample_ms;
 
 	float differential_pressure_d(){
 		return 333.00;
@@ -245,6 +222,8 @@ private:
 	int measure();
 	int collect();
 
+	int measurment();
+
 	void parameters_update(); //param
 	void update_params(); //param
 	orb_advert_t 	_mavlink_log_pub {nullptr}; //log send to
@@ -256,11 +235,9 @@ private:
 	//Subscriptions of param
 	uORB::Subscription _differential_pressure_sub{ORB_ID(differential_pressure)}; //param
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s}; //param
+
 	uint32_t _measure_interval{CONVERSION_INTERVAL};
 	uint32_t _conversion_interval{CONVERSION_INTERVAL};
-
-	//int16_t _dp_raw_prev{0};
-	//int16_t _dT_raw_prev{0};
 
 	bool _sensor_ok{false};
 	bool _collect_phase{false};
