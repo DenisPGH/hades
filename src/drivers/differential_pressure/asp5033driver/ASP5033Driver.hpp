@@ -213,9 +213,6 @@ public:
 		return 333.00;
 	}
 
-	uint32_t test_press =1;
-	uint32_t test_temp =1;
-
 
 
 
@@ -225,7 +222,9 @@ private:
 	int measure();
 	int collect();
 
-	int measurment();
+	int measurment(); // r
+	float get_differential_pressure();
+	clock_t last_sample_time=clock();
 
 	void parameters_update(); //param
 	void update_params(); //param
