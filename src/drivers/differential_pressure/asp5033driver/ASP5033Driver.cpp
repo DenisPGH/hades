@@ -238,14 +238,14 @@ int ASP5033Driver::measurment()
 	press_sum=0.0;
 	press_count=0.0;
 
-
-
+	++test_press;
+	++test_temp;
 	// update the publish values
 	differential_pressure_s differential_pressure{};
 	differential_pressure.timestamp_sample = timestamp_sample;
 	differential_pressure.device_id = get_device_id();
-	differential_pressure.differential_pressure_pa = (PRESSURE_PREV*0.001f); //diff_press_pa
-	differential_pressure.temperature = TEMPERATURE ; //temperature_c
+	differential_pressure.differential_pressure_pa =(test_press*0.001f);// (PRESSURE_PREV*0.001f);
+	differential_pressure.temperature = test_temp;//TEMPERATURE ;
 	differential_pressure.error_count = perf_event_count(_comms_errors);
 	differential_pressure.timestamp = hrt_absolute_time();
 	_differential_pressure_pub.publish(differential_pressure);
@@ -316,7 +316,8 @@ void ASP5033Driver::RunImpl()
 
 	////////////////####################   NEW  #############/////////////////////////////
 	measurment();
-	ScheduleDelayed(CONVERSION_INTERVAL);
+	//ScheduleDelayed(CONVERSION_INTERVAL);
+	ScheduleDelayed(CONVERSION_INTERVAL*100); //1sec
 
 
 
