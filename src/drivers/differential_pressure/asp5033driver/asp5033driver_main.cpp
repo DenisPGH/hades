@@ -4,7 +4,6 @@
 
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
-//#define I2C_ADDRESS_ASP5033 0x6D
 
 
 
@@ -25,8 +24,7 @@ void ASP5033Driver::print_usage()
 
 extern "C" int asp5033driver_main(int argc, char *argv[])
 {
-	PX4_INFO("DENISLAV-23");
-	//mavlink_log_info(&_mavlink_log_pub,"enter main function");
+	PX4_INFO("DENISLAV-24");
 
 	using ThisDriver = ASP5033Driver;
 	BusCLIArguments cli{true, false};
@@ -38,18 +36,14 @@ extern "C" int asp5033driver_main(int argc, char *argv[])
 
 
 	if (!verb) {
-		//PX4_INFO("return -1");
 		ThisDriver::print_usage();
 		return -1;
 	}
 
 	BusInstanceIterator iterator(MODULE_NAME, cli, DRV_DIFF_PRESS_DEVTYPE_ASP5033);
 
-	//ThisDriver::print_status(cli,iterator); //DEBUG
 
 	if (!strcmp(verb, "start")) {
-		//PX4_INFO("enter start");
-		//mavlink_log_info(&_mavlink_log_pub,"enter start-mav");
 		return ThisDriver::module_start(cli, iterator);
 
 	} else if (!strcmp(verb, "stop")) {
