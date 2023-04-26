@@ -66,6 +66,8 @@ public:
 	float press_sum;
 	uint32_t press_count;
 
+
+
 	//test functions
 	float differential_pressure_d(){
 		return 333.00;
@@ -80,6 +82,9 @@ public:
 
 private:
 	int probe() override;
+
+	int measure();
+	int collect();
 
 	int measurment(); // r
 	float get_differential_pressure(); //r

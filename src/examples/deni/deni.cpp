@@ -61,7 +61,8 @@
 
 // /home/nano/Firmware/boards/ark/cannode/init/rc.board_sensors
 // /home/nano/Firmware/src/modules/commander/airspeed_calibration.cpp
-///home/nano/Firmware/boards/px4/fmu-v6c/init/rc.board_sensors
+///home/nano/Firmware/boards/px4/fmu-v6c/init/rc.board_sensors - here the sensor start automaticaly
+
 // /home/nano/Firmware/src/lib/drivers/device/posix/I2C.cpp i2c communication file
 
 
