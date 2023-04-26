@@ -90,7 +90,9 @@ private:
 	float get_differential_pressure(); //r
 	clock_t last_sample_time=clock();
 
+
 	orb_advert_t 	_mavlink_log_pub {nullptr}; //log send to
+
 
 	uint32_t _measure_interval{CONVERSION_INTERVAL};
 	uint32_t _conversion_interval{CONVERSION_INTERVAL};

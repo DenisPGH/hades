@@ -306,7 +306,7 @@ int ASP5033Driver::collect()
 	differential_pressure.timestamp_sample = timestamp_sample;
 	differential_pressure.device_id = get_device_id();
 
-	differential_pressure.differential_pressure_pa =PRESSURE; //(PRESSURE*0.001f);
+	differential_pressure.differential_pressure_pa =(PRESSURE); //(PRESSURE*0.001f);
 	differential_pressure.temperature = TEMPERATURE ;
 
 	//differential_pressure.differential_pressure_pa =(1000*0.001f);  //test values
@@ -320,5 +320,8 @@ int ASP5033Driver::collect()
 
 	return PX4_OK;
 }
+
+
+
 
 
