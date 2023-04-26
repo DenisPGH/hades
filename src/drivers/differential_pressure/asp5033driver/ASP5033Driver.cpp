@@ -3,13 +3,11 @@
 
 ASP5033Driver::ASP5033Driver(const I2CSPIDriverConfig &config) :
 	I2C(config),
-	I2CSPIDriver(config),
-	ModuleParams(nullptr) //param
+	I2CSPIDriver(config)
 
 {
 	_differential_pressure_pub.advertise();
-	// initialise parameters
-	update_params();  //param
+
 }
 
 ASP5033Driver::~ASP5033Driver()
@@ -162,23 +160,3 @@ void ASP5033Driver::RunImpl()
 }
 
 
-
-
-void ASP5033Driver::parameters_update()
-{
-	if (_differential_pressure_sub.updated()) {
-		differential_pressure_s differential_pressure_update;
-		_differential_pressure_sub.copy(&differential_pressure_update);
-
-		// If any parameter updated, call updateParams() to check if
-		// this class attributes need updating (and do so).
-		updateParams();
-	}
-}
-
-
-void ASP5033Driver::update_params()
-{
-	updateParams();
-
-}
