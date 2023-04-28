@@ -1,0 +1,12 @@
+menuconfig MODULES_ASPDENI
+	bool "aspdeni"
+	default n
+	---help---
+		Enable support for aspdeni
+
+menuconfig USER_ASPDENI
+	bool "aspdeni running as userspace module"
+	default y
+	depends on BOARD_PROTECTED && MODULES_ASPDENI
+	---help---
+		Put aspdeni in userspace memory
