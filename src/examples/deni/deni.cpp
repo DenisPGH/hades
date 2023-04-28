@@ -64,8 +64,6 @@
 
 // /home/nano/Firmware/src/lib/drivers/device/posix/I2C.cpp i2c communication file
 
-///home/nano/Firmware/platforms/nuttx/NuttX/nuttx/arch/arm/include/stm32/chip.h
-
 
 
 class Air: public ASP5033Driver {
