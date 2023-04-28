@@ -21,7 +21,6 @@
 
 #include "deni.hpp"
 #include <uORB/topics/differential_pressure.h>
-#include <drivers/differential_pressure/asp5033driver/ASP5033Driver.hpp>
 
 //make
 // PATHS
@@ -81,8 +80,8 @@ class Air: public ASP5033Driver {
 		orb_advert_t asp5033_pub = orb_advertise(ORB_ID(differential_pressure), &asp5033_);
 		//orb_copy(ORB_ID(airspeed__a_s_p5033), asp5033_pub, &get_temp());
 		//while (){
-		asp5033_.temperature=temperature_d();
-		asp5033_.differential_pressure_pa=differential_pressure_d();
+		asp5033_.temperature=4.0;
+		asp5033_.differential_pressure_pa=200;
 		orb_publish(ORB_ID(differential_pressure), asp5033_pub, &asp5033_);
 
 		//}
